@@ -1,5 +1,5 @@
 data = {
-    "TOKEN": "",
+    "TOKEN": "MTEwNzIzMTgwNjk3MDkzNzM0NA.GWPDyW.J1FhDDwVOcSn6T7ctxsXKRvBJhWmSfy4MR9qII",
     "words": [
         "блин"
     ],
@@ -33,5 +33,14 @@ data = {
 @Backend - всегда за зановеской
 
 @Frontend - это еще пол дела !
+    """,
+    "help": """
+Команды сервера:
+
+/help - показывает все команды сервера
+
+/embed - отправляет embed сообщение
+
+/ab - выполняет математическую опперацию
     """
 }

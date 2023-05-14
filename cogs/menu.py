@@ -3,11 +3,11 @@ from disnake.ext import commands
 from disnake.interactions import MessageInteraction
 import config
 
-class Commands(commands.Cog):
+class Menu(commands.Cog):
     def __init__(self , bot):
         self.bot = bot
 
-    class Menu(disnake.ui.StringSelect):
+    class Menu_Select(disnake.ui.StringSelect):
 
         def __init__(self):
             options = [
@@ -45,17 +45,18 @@ class Commands(commands.Cog):
 
         def __init__(self):
             super().__init__()
-            self.add_item(Commands.Menu())
+            self.add_item(Menu.Menu_Select())
 
 
-    @commands.command()
+    @commands.slash_command(description="Создает меню навигации")
+    @commands.has_permissions(administrator=True)
     async def menu(self , ctx):
         embed = disnake.Embed(
-            color=0xffffff,
+            color=disnake.Color.green(),
         )
-        embed.set_image("https://thumbs.dreamstime.com/b/картина-навигации-вектора-с-словом-предпосылка-114976893.jpg")
-        await ctx.send(embed=embed , view=Commands.View())
+        embed.set_image("http://alumni.mgimo.ru/resources/000/000/000/000/175/175145.jpg")
+        await ctx.send(embed=embed , view=Menu.View())
 
 
 def setup(bot):
-    bot.add_cog(Commands(bot))
+    bot.add_cog(Menu(bot))
