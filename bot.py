@@ -3,7 +3,7 @@ from disnake.ext import commands
 import config
 import os
 
-bot = commands.Bot(command_prefix="!" , intents=disnake.Intents.all() , help_command=None , activity=disnake.Game('VS Code | /help' , status=disnake.Status.online))
+bot = commands.Bot(command_prefix="!" , intents=disnake.Intents.all() , help_command=None , activity=disnake.Game('VS Code' , status=disnake.Status.online))
 
 @bot.command()
 @commands.is_owner()

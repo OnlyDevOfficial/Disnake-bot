@@ -14,9 +14,7 @@ class Register(commands.Cog):
             pass
 
         else:
-            channel = self.bot.get_channel(1100086673448108103)
             self.DataBase.create(message.author.id , message.author.name)
-            await channel.send(f"Пользователь {message.author.mention} был успешно зарегистрирован в базе данных!")
 
 def setup(bot):
     bot.add_cog(Register(bot))

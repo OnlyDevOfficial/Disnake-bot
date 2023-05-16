@@ -1,5 +1,5 @@
 data = {
-    "TOKEN": "",
+    "TOKEN": "MTEwNzIzMTgwNjk3MDkzNzM0NA.GVXcxa.gGMm0rEa-nV9nv9KqakVh3YgcbrYW_PIebztus",
     "words": [
         "блин"
     ],

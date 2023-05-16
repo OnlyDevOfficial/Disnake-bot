@@ -8,7 +8,7 @@ class Members(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self , member):
-        channel = self.bot.get_channel(1100086673448108103)
+        channel = self.bot.get_channel(1099664405559513161)
 
         embed = disnake.Embed(
             title="Новый участник",
@@ -21,7 +21,7 @@ class Members(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self , member):
-        channel = self.bot.get_channel(1100086673448108103)
+        channel = self.bot.get_channel(1099665452092899418)
 
         embed = disnake.Embed(
             title="Прощание",
