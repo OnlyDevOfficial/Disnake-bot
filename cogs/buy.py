@@ -15,7 +15,7 @@ class Buy(commands.Cog):
         result = self.DataBase.buy(name , ctx.author.id)
         if result == "На вашем счету недостаточно средств!":
             embed = disnake.Embed(
-                color=disnake.Color.green(),
+                color=disnake.Color.red(),
                 title="Недостаточно средств",
                 description=result
             )

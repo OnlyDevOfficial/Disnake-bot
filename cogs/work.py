@@ -11,7 +11,7 @@ class Work(commands.Cog):
         self.DataBase = DataBase("db.db")
 
     @commands.slash_command(description="Пахай негр")
-    @commands.cooldown(1, 60*60*24 , commands.BucketType.user)
+    @commands.cooldown(1, 60*60*12 , commands.BucketType.user)
     async def work(self , ctx):
         win = random.randint(3000 , 10000)
         # add_time = None

@@ -10,13 +10,14 @@ class Data(commands.Cog):
 
     @commands.slash_command(description="Показывает ваш профиль")
     async def profile(self , ctx):
-        username , balance , level , exp = self.DataBase.data(ctx.author.id)
+        username , balance , level , bank = self.DataBase.data(ctx.author.id)
         embed = disnake.Embed(
             color=disnake.Color.green(),
             title=f"__Информация о пользователе {username}__",
             description=f"""
 Имя: {username}
 
+Банк: {bank}🍬
 Ваш счет: {balance}🍬
 Уровень: {level}
 

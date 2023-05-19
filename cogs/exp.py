@@ -32,7 +32,6 @@ class Exp(commands.Cog):
         else:
             channel = self.bot.get_channel(1099672058004250735)
             self.DataBase.create(message.author.id , message.author.name)
-            await channel.send(f"Пользователь {message.author.mention} был успешно зарегистрирован в базе данных!")
 
 def setup(bot):
     bot.add_cog(Exp(bot))

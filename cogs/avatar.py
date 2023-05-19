@@ -15,7 +15,7 @@ class Avatar(commands.Cog):
         user = member or ctx.author
         embed = disnake.Embed(
             color=disnake.Color.green(),
-            title=f"Аватар __{ctx.author.name}__"
+            title=f"Аватар __{member.name}__"
         )
         embed.set_image(user.display_avatar.url)
         await ctx.send(embed=embed)

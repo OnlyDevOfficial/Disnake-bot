@@ -1,4 +1,5 @@
 import sqlite3
+import random
 
 class DataBase:
     def __init__(self , db):
@@ -16,10 +17,10 @@ class DataBase:
     def data(self , id):
         result = self.cur.execute("SELECT * FROM users WHERE `user_id` = ?" , (id,)).fetchone()
         username = result[2]
-        balance = result[3]
-        level = result[4]
-        exp = result[5]
-        return username , balance , level , exp
+        bank = result[3]
+        balance = result[4]
+        level = result[5]
+        return username , balance , level , bank
     
     # def test(self , id):
     #     money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (id,)).fetchone()
@@ -105,8 +106,81 @@ class DataBase:
         
         else:
             return False
+        
 
-    
+    def russian(self , id , win , bool):
+        user_money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (id,)).fetchone()
+        user_money = user_money_data[0]
+        if bool == True:
+            money = user_money + win
+            self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (money , id,))
+            self.connect.commit()
+
+        else:
+            money = user_money - win
+            self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (money , id,))
+            self.connect.commit()
+
+    def debiting(self , id , quantity):
+        user_money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (id,)).fetchone()
+        user_money = user_money_data[0]
+        money = user_money - quantity
+        self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (money , id,))
+        self.connect.commit()
+
+    def bank(self , id , bet):
+        user_money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (id,)).fetchone()
+        user_bank_data = self.cur.execute("SELECT bank FROM users WHERE user_id = ?" , (id,)).fetchone()
+        user_money = user_money_data[0]
+        money_bank = user_bank_data[0]
+        money_user = user_money - bet
+        bank_user = money_bank + bet
+        self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (money_user , id,))
+        self.cur.execute("UPDATE users SET bank = (?) WHERE user_id = (?)" , (bank_user , id,))
+        self.connect.commit()
+
+    def take(self , id , bet):
+        user_money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (id,)).fetchone()
+        user_bank_data = self.cur.execute("SELECT bank FROM users WHERE user_id = ?" , (id,)).fetchone()
+        user_money = user_money_data[0]
+        money_bank = user_bank_data[0]
+        money_user = user_money + bet
+        bank_user = money_bank - bet
+        self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (money_user , id,))
+        self.cur.execute("UPDATE users SET bank = (?) WHERE user_id = (?)" , (bank_user , id,))
+        self.connect.commit()
+
+    def transfer(self , id , member , money):
+        user_money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (id,)).fetchone()
+        user_money_tranfer_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (member,)).fetchone()
+        user_money = user_money_data[0]
+        user_money_tranfer = user_money_tranfer_data[0]
+        if user_money >= money:
+            transfer = user_money_tranfer + money
+            member_money = user_money - money
+            self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (member_money , id,))
+            self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (transfer , member,))
+            self.connect.commit()
+
+        else:
+            return "Error"
+     
+    def steal(self , id , user , win):
+        user_money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (id,)).fetchone()
+        user_money_data_steal = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (user,)).fetchone()
+        user_money = user_money_data[0]
+        user_money_steal = user_money_data_steal[0]
+        if user_money_steal > 4000:
+            win_user = user_money + win
+            steal = user_money_steal - win
+            self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (win_user , id,))
+            self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (steal , user,))
+            self.connect.commit()
+
+        else:
+            return "На счету жертвы не больше 4000🍬"
+
+
     def close(self):
         """Закрывавем соединение с базой данных"""
         self.connect.close()

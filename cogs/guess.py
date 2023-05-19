@@ -22,7 +22,7 @@ class Guess(commands.Cog):
         ]
     )):
         int = random.randint(1 , 5)
-        user_name , balance , level , exp = self.DataBase.data(ctx.author.id)
+        user_name , balance , level , bank = self.DataBase.data(ctx.author.id)
         if balance >= bet:
             if number == int:
                 self.DataBase.guess(ctx.author.id , bet , True)
@@ -37,7 +37,7 @@ class Guess(commands.Cog):
             else:
                 self.DataBase.guess(ctx.author.id , bet , False)
                 embed = disnake.Embed(
-                    color=disnake.Color.green(),
+                    color=disnake.Color.red(),
                     title="Проигрыш",
                     description=f"Сожалею , но вы проиграли {bet}🍬\nВыпавшее число {int}"
                 )
