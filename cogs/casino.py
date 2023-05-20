@@ -19,8 +19,8 @@ class Casino(commands.Cog):
             "3st",
         ]
     )):
-        user_name , balance , level , bank = self.DataBase.data(ctx.author.id)
-        if balance > bet:
+        user_name , balance , level , bank , work = self.DataBase.data(ctx.author.id)
+        if balance >= bet:
             red = [1 , 3 , 5 , 7 , 9 , 12 , 14 , 16 , 18 , 19 , 21 , 23 , 25 , 27 , 30 , 32 , 34 , 36]
             black = [2 , 4 , 6 , 8 , 10 , 11 , 13 , 15 , 17 , 20 , 22 , 24 , 26 , 28 , 29 , 31 , 33 , 35]
             one = [1 , 4 , 7 , 10 , 13 , 16 , 19 , 22 , 25 , 28 , 31 , 34]

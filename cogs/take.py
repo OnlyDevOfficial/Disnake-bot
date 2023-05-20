@@ -12,7 +12,7 @@ class Take(commands.Cog):
 
     @commands.slash_command(description="Снимай деньги с банка оккуратно!")
     async def take(self , ctx , bet: int):
-        user_name , money , level , bank = self.DataBase.data(ctx.author.id)
+        user_name , money , level , bank , work = self.DataBase.data(ctx.author.id)
         if bank >= bet:
             self.DataBase.take(ctx.author.id , bet)
             embed = disnake.Embed(

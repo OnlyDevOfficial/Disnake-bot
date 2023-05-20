@@ -22,7 +22,7 @@ class Guess(commands.Cog):
         ]
     )):
         int = random.randint(1 , 5)
-        user_name , balance , level , bank = self.DataBase.data(ctx.author.id)
+        user_name , balance , level , bank , work = self.DataBase.data(ctx.author.id)
         if balance >= bet:
             if number == int:
                 self.DataBase.guess(ctx.author.id , bet , True)

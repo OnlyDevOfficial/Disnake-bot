@@ -20,7 +20,8 @@ class DataBase:
         bank = result[3]
         balance = result[4]
         level = result[5]
-        return username , balance , level , bank
+        work = result[7]
+        return username , balance , level , bank , work
     
     # def test(self , id):
     #     money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (id,)).fetchone()
@@ -179,6 +180,35 @@ class DataBase:
 
         else:
             return "На счету жертвы не больше 4000🍬"
+        
+
+    def give(self , member , int):
+        user_money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (member,)).fetchone()
+        user_money = user_money_data[0]
+        self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (user_money + int , member,))
+        self.connect.commit()
+
+    def hire(self , id , work):
+        user_money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (id,)).fetchone()
+        user_money = user_money_data[0]
+        if work == "Кассир":
+            money = user_money - 30000
+            self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (money , id,))
+            self.cur.execute("UPDATE users SET work = (?) WHERE user_id = (?)" , ("Кассир" , id,))
+            self.connect.commit()
+
+        elif work == "Телеведущий":
+            money = user_money - 100000
+            self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (money , id,))
+            self.cur.execute("UPDATE users SET work = (?) WHERE user_id = (?)" , ("Телеведущий" , id,))
+            self.connect.commit()
+
+
+        elif work == "Банкир":
+            money = user_money - 300000
+            self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (money , id,))
+            self.cur.execute("UPDATE users SET work = (?) WHERE user_id = (?)" , ("Банкир" , id,))
+            self.connect.commit()
 
 
     def close(self):

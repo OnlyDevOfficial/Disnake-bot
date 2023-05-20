@@ -11,7 +11,7 @@ class Avatar(commands.Cog):
         self.DataBase = DataBase("db.db")
 
     @commands.slash_command(description="Показывает аватарку пользователя")
-    async def avatar(self , ctx , member: disnake.Member = None):
+    async def avatar(self , ctx , member: disnake.Member):
         user = member or ctx.author
         embed = disnake.Embed(
             color=disnake.Color.green(),

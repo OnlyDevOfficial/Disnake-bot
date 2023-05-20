@@ -19,12 +19,54 @@ class Exp(commands.Cog):
                 return
             
             else:
-                user_name , balance , level_user , exp = self.DataBase.data(message.author.id)
+                user_name , balance , level , bank , work = self.DataBase.data(message.author.id)
                 channel = self.bot.get_channel(1099672058004250735)
+
+
+                if level == 2:
+                    await message.author.add_roles(message.guild.get_role(1099667894637432893))
+                    await message.author.remove_roles(message.guild.get_role(1099667941479424070))
+                    await message.author.remove_roles(message.guild.get_role(1099668066201247894))
+                    await message.author.remove_roles(message.guild.get_role(1099668193871667300))
+                    await message.author.remove_roles(message.guild.get_role(1099668274830131345))
+
+
+                if level == 5:
+                    await message.author.add_roles(message.guild.get_role(1099667941479424070))
+                    await message.author.remove_roles(message.guild.get_role(1099667894637432893))
+                    await message.author.remove_roles(message.guild.get_role(1099668066201247894))
+                    await message.author.remove_roles(message.guild.get_role(1099668193871667300))
+                    await message.author.remove_roles(message.guild.get_role(1099668274830131345))
+
+
+                if level == 10:
+                    await message.author.add_roles(message.guild.get_role(1099668066201247894))
+                    await message.author.remove_roles(message.guild.get_role(1099667894637432893))
+                    await message.author.remove_roles(message.guild.get_role(1099667941479424070))
+                    await message.author.remove_roles(message.guild.get_role(1099668193871667300))
+                    await message.author.remove_roles(message.guild.get_role(1099668274830131345))
+
+
+                if level == 20:
+                    await message.author.add_roles(message.guild.get_role(1099668193871667300))
+                    await message.author.remove_roles(message.guild.get_role(1099667894637432893))
+                    await message.author.remove_roles(message.guild.get_role(1099667941479424070))
+                    await message.author.remove_roles(message.guild.get_role(1099668066201247894))
+                    await message.author.remove_roles(message.guild.get_role(1099668274830131345))
+
+
+                if level == 30:
+                    await message.author.add_roles(message.guild.get_role(1099668274830131345))
+                    await message.author.remove_roles(message.guild.get_role(1099667894637432893))
+                    await message.author.remove_roles(message.guild.get_role(1099667941479424070))
+                    await message.author.remove_roles(message.guild.get_role(1099668066201247894))
+                    await message.author.remove_roles(message.guild.get_role(1099668193871667300))         
+
+        
                 embed = disnake.Embed(
                     color=disnake.Color.green(),
                     title="Новый уровень",
-                    description=f"Поздравляю! Пользователь __{user_name}__ повысил свой уровень , теперь его уровень: {level_user}"
+                    description=f"Поздравляю! Пользователь __{user_name}__ повысил свой уровень , теперь его уровень: {level}"
                 )
 
                 await channel.send(embed=embed)

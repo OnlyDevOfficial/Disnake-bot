@@ -14,7 +14,7 @@ class Steal(commands.Cog):
     @commands.slash_command(description="Я вызываю полицию")
     @commands.cooldown(1, 60*60*12 , commands.BucketType.user)
     async def steal(self , ctx , user: disnake.Member):
-        username , balance , level , bank = self.DataBase.data(user.id)
+        username , balance , level , bank , work = self.DataBase.data(user.id)
         win = random.randint(0 , balance / 2)
         result = self.DataBase.steal(ctx.author.id , user.id , win)
         if result == "На счету жертвы не больше 4000🍬":
