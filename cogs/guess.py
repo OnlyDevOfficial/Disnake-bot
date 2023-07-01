@@ -21,37 +21,47 @@ class Guess(commands.Cog):
             5,
         ]
     )):
-        int = random.randint(1 , 5)
-        user_name , balance , level , bank , work = self.DataBase.data(ctx.author.id)
-        if balance >= bet:
-            if number == int:
-                self.DataBase.guess(ctx.author.id , bet , True)
-                embed = disnake.Embed(
-                    color=disnake.Color.green(),
-                    title="Выигрыш",
-                    description=f"Поздравляю! Вы выиграли {bet * 2}🍬\nВыпавшее число {int}"
-                )
+        if self.DataBase.check_settings_true_module(ctx.author.guild.name , "economy_commands"):
+            int = random.randint(1 , 5)
+            user_name , balance , level , bank , work = self.DataBase.data(ctx.author.id)
+            if balance >= bet:
+                if number == int:
+                    self.DataBase.guess(ctx.author.id , bet , True)
+                    embed = disnake.Embed(
+                        color=disnake.Color.green(),
+                        title="Выигрыш",
+                        description=f"Поздравляю! Вы выиграли {bet * 2}🍬\nВыпавшее число {int}"
+                    )
 
-                await ctx.send(embed=embed)
+                    await ctx.send(embed=embed)
+
+                else:
+                    self.DataBase.guess(ctx.author.id , bet , False)
+                    embed = disnake.Embed(
+                        color=disnake.Color.red(),
+                        title="Проигрыш",
+                        description=f"Сожалею , но вы проиграли {bet}🍬\nВыпавшее число {int}"
+                    )
+
+                    await ctx.send(embed=embed)
 
             else:
-                self.DataBase.guess(ctx.author.id , bet , False)
                 embed = disnake.Embed(
-                    color=disnake.Color.red(),
-                    title="Проигрыш",
-                    description=f"Сожалею , но вы проиграли {bet}🍬\nВыпавшее число {int}"
+                    color=disnake.Color.green(),
+                    title="Недостаточно средств",
+                    description=f"На вашем счету недостаточно средств!"
                 )
-
                 await ctx.send(embed=embed)
+
 
         else:
             embed = disnake.Embed(
-                color=disnake.Color.green(),
-                title="Недостаточно средств",
-                description=f"На вашем счету недостаточно средств!"
+                title="Ошибка",
+                description="Пользовательские команды отключены на вашем сервере! Чтобы включить их пропишите команду **/settings** и выберите нужный вам пункт",
+                color=disnake.Color.red()
             )
+            
             await ctx.send(embed=embed)
-
 
 
 def setup(bot):

@@ -93,9 +93,19 @@ class Hired(commands.Cog):
     @commands.slash_command(description="Не нравится работа? Устройся на другую")
     @commands.has_permissions(administrator=True)
     async def hire(self , ctx):
-        view = disnake.ui.View(timeout=None) 
-        view.add_item(Menu_Select()) 
-        await ctx.send(view=view)
+        if self.DataBase.check_settings_true_module(ctx.author.guild.name , "economy_commands"):
+            view = disnake.ui.View(timeout=None) 
+            view.add_item(Menu_Select()) 
+            await ctx.send(view=view)
+            
+        else:
+            embed = disnake.Embed(
+                title="Ошибка",
+                description="Команды экономики отключены на вашем сервере! Чтобы включить их пропишите команду **/settings** и выберите нужный вам пункт",
+                color=disnake.Color.red()
+            )
+            
+            await ctx.send(embed=embed)
 
 
 def setup(bot):

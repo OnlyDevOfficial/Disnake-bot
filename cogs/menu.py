@@ -1,14 +1,17 @@
 import disnake
 from disnake.ext import commands
 from disnake.interactions import MessageInteraction
+from db import DataBase
 import config
 
 class Menu_Select(disnake.ui.StringSelect):
 
     def __init__(self):
         options = [
-            disnake.SelectOption(label="Роли" , description="Показывает все роли сервера"),
-            disnake.SelectOption(label="Правила" , description="Показывает правила сервера")
+            disnake.SelectOption(label="Роли" , description="Показывает все роли сервера" , emoji="🎮"),
+            disnake.SelectOption(label="Правила" , description="Показывает правила сервера" , emoji="📚"),
+            disnake.SelectOption(label="Команды" , description="Показывает команды сервера" , emoji="⌨️"),
+            disnake.SelectOption(label="Каналы" , description="Показывает каналы сервера" , emoji="📰"),
         ]
 
         super().__init__(
@@ -37,15 +40,32 @@ class Menu_Select(disnake.ui.StringSelect):
             )
             await inter.response.send_message(embed=embed , ephemeral=True)
 
+        elif self.values[0] == "Команды":
+            embed = disnake.Embed(
+                color=0xffffff,
+                description=f"{config.data['help']}",
+                title='Команды'
+            )
+            await inter.response.send_message(embed=embed , ephemeral=True)
+
+        elif self.values[0] == "Каналы":
+            embed = disnake.Embed(
+                color=0xffffff,
+                description=config.data['channels'],
+                title='Каналы'
+            )
+            await inter.response.send_message(embed=embed , ephemeral=True)
+
+
 class Menu(commands.Cog):
     def __init__(self , bot):
         self.bot = bot
         self.persistents_view_added = False
 
 
-    @commands.slash_command(description="Создает меню навигации")
+    @commands.slash_command(description="Создает меню навигации" , guild_ids=[1123558151740993609])
     @commands.has_permissions(administrator=True)
-    async def menu(self , ctx):
+    async def rules(self , ctx):
         view = disnake.ui.View(timeout=None) 
         view.add_item(Menu_Select())  
         embed = disnake.Embed(
@@ -62,7 +82,7 @@ class Menu(commands.Cog):
         
         view = disnake.ui.View(timeout=None) 
         view.add_item(Menu_Select())  
-        self.bot.add_view(view , message_id=1109127069864054795)
+        self.bot.add_view(view , message_id=config.data['menu'])
 
 
 def setup(bot):

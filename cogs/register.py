@@ -14,7 +14,7 @@ class Register(commands.Cog):
             pass
 
         else:
-            self.DataBase.create(message.author.id , message.author.name)
+            self.DataBase.create(message.author.id , message.author.name , message.author.guild.name)
 
 def setup(bot):
     bot.add_cog(Register(bot))

@@ -12,28 +12,44 @@ class Buy(commands.Cog):
 
     @commands.slash_command(description="Не хочешь чего нибудь купить?")
     async def buy(self , ctx , name):
-        result = self.DataBase.buy(name , ctx.author.id)
-        if result == "На вашем счету недостаточно средств!":
-            embed = disnake.Embed(
-                color=disnake.Color.red(),
-                title="Недостаточно средств",
-                description=result
-            )
+        if self.DataBase.check_settings_true_module(ctx.author.guild.name , "economy_commands"):
+            result = self.DataBase.buy(name , ctx.author.id)
+            if result == "На вашем счету недостаточно средств!":
+                embed = disnake.Embed(
+                    color=disnake.Color.red(),
+                    title="Недостаточно средств",
+                    description=result
+                )
+                
+                date = datetime.datetime.now()
+                embed.set_footer(text=f"{date}")
 
-            await ctx.send(embed=embed)
+                await ctx.send(embed=embed)
 
+            else:
+                guild = self.bot.get_guild(ctx.guild.id)
+                role = guild.get_role(result)
+                
+                await ctx.author.add_roles(role)
+
+                embed = disnake.Embed(
+                    color=disnake.Color.green(),
+                    title="Покупка",
+                    description=f"Поздравляю! Вы приобрели роль {role}"
+                )
+                
+                date = datetime.datetime.now()
+                embed.set_footer(text=f"{date}")
+
+                await ctx.send(embed=embed)
+                
         else:
-            guild = self.bot.get_guild(ctx.guild.id)
-            role = guild.get_role(result)
-            
-            await ctx.author.add_roles(role)
-
             embed = disnake.Embed(
-                color=disnake.Color.green(),
-                title="Покупка",
-                description=f"Поздравляю! Вы приобрели роль {role}"
+                title="Ошибка",
+                description="Команды экономики отключены на вашем сервере! Чтобы включить их пропишите команду **/settings** и выберите нужный вам пункт",
+                color=disnake.Color.red()
             )
-
+            
             await ctx.send(embed=embed)
 
 def setup(bot):

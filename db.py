@@ -1,5 +1,4 @@
 import sqlite3
-import random
 
 class DataBase:
     def __init__(self , db):
@@ -10,8 +9,8 @@ class DataBase:
         result = self.cur.execute("SELECT `id` FROM `users` WHERE `user_id` = ?" , (id,))
         return bool(len(result.fetchall()))
     
-    def create(self , id , user_name):
-        self.cur.execute("INSERT INTO `users` (`user_id` , `username`) VALUES (? , ?)" , (id, user_name,))
+    def create(self , id , user_name , guild):
+        self.cur.execute("INSERT INTO `users` (`user_id` , `username` , `guild`) VALUES (? , ? , ?)" , (id, user_name, guild,))
         return self.connect.commit()
     
     def data(self , id):
@@ -49,12 +48,12 @@ class DataBase:
         self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (result , id,))
         self.connect.commit()
 
-    def add_item(self , name , price , role):
-        self.cur.execute("INSERT INTO shop (`name` , `price` , `role`) VALUES (? , ? , ?)" , (name , price , role,))
+    def add_item(self , name , price , role , guild):
+        self.cur.execute("INSERT INTO shop (`name` , `price` , `role` , `guild`) VALUES (? , ? , ?)" , (name , price , role, guild,))
         self.connect.commit()
 
-    def shop(self):
-        result = self.cur.execute("SELECT * FROM shop").fetchall()
+    def shop(self , guild):
+        result = self.cur.execute("SELECT * FROM shop WHERE guild = ?" , (guild,)).fetchall()
         return result
     
     def buy(self , name , id):
@@ -180,13 +179,6 @@ class DataBase:
 
         else:
             return "На счету жертвы не больше 4000🍬"
-        
-
-    def give(self , member , int):
-        user_money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (member,)).fetchone()
-        user_money = user_money_data[0]
-        self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (user_money + int , member,))
-        self.connect.commit()
 
     def hire(self , id , work):
         user_money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (id,)).fetchone()
@@ -210,6 +202,103 @@ class DataBase:
             self.cur.execute("UPDATE users SET work = (?) WHERE user_id = (?)" , ("Банкир" , id,))
             self.connect.commit()
 
+    def settings(self , id , name):
+        if name == "Piar":
+            result = self.cur.execute("SELECT piar_id FROM settings")
+            result = bool(len(result.fetchall()))
+            if result == False:
+                self.cur.execute("INSERT INTO settings (piar_id) VALUES (?)" , (id,))
+
+            else:
+                self.cur.execute("UPDATE settings SET piar_id = (?)" , (id,))
+
+            self.connect.commit()                
+
+        elif name == "Nav":
+            result = self.cur.execute("SELECT nav_id FROM settings")
+            result = bool(len(result.fetchall()))
+            if result == False:
+                self.cur.execute("INSERT INTO settings (nav_id) VALUES (?)" , (id,))
+
+            else:
+                self.cur.execute("UPDATE settings SET nav_id = (?)" , (id,))
+
+            self.connect.commit()
+
+    def settings_data(self , name):
+        if name == "Nav":
+            result = self.cur.execute("SELECT nav_id FROM settings").fetchone()
+            return result[0]
+        
+        elif name == "Piar":
+            result = self.cur.execute("SELECT piar_id FROM settings").fetchone()
+            return result[0]
+        
+
+    def leaderboard(self , guild):
+        result = self.cur.execute("SELECT * FROM users WHERE guild = ?" , (guild,)).fetchall()
+        return result
+    
+    def crime(self , id , win , bool):
+        user_money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (id,)).fetchone()
+        user_money = user_money_data[0]
+        if bool == True:
+            win = user_money + win
+            self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (win , id,))
+
+        else:
+            win = user_money - win
+            self.cur.execute("UPDATE users SET money = (?) WHERE user_id = (?)" , (win , id,))
+        
+        self.connect.commit()
+        
+    def settings(self , guild , command , update):
+        if command == "Модерация":
+            self.cur.execute("UPDATE settings SET admin_commands = ? WHERE guild = ?" , (update , guild,))
+            
+        elif command == "Экономика":
+            self.cur.execute("UPDATE settings SET economy_commands = ? WHERE guild = ?" , (update , guild,))
+            
+        elif command == "Приветствие":
+            self.cur.execute("UPDATE settings SET greeting = ? WHERE guild = ?" , (update , guild,))
+            
+        elif command == "Прощание":
+            self.cur.execute("UPDATE settings SET farewell = ? WHERE guild = ?" , (update , guild,))
+            
+        elif command == "Уровни":
+            self.cur.execute("UPDATE settings SET farewell = ? WHERE guild = ?" , (update , guild,))
+            
+        elif command == "Пользовательские команды":
+            self.cur.execute("UPDATE settings SET user_commands = ? WHERE guild = ?" , (update , guild,))
+            
+        self.connect.commit()
+        
+    def setup_settings(self , guild):
+        self.cur.execute("INSERT INTO settings (`guild` , `admin_commands` , `economy_commands` , `greeting` , `farewell` , `exp`) VALUES (? , ? , ? , ? , ? , ?)" , (guild, "False", "False", "False", "False", "False",))
+        self.connect.commit()
+        
+    def check_settings(self , guild):
+        result = self.cur.execute("SELECT `guild` FROM `settings` WHERE `guild` = ?" , (guild,))
+        return bool(len(result.fetchall()))
+
+    def check_settings_true_module(self , guild , module):
+        result = self.cur.execute(f"SELECT {module} FROM settings WHERE `guild` = ?" , (guild,)).fetchone()
+        if result:
+            if result[0] != "False":
+                return True
+        
+        else:
+            return False
+        
+    def check_id_channel(self , guild , option):
+        result = self.cur.execute(f"SELECT {option} FROM `settings` WHERE `guild` = ?" , (guild,)).fetchone()
+        if result[0] == "False":
+            return "False"
+        
+        else:
+            print(int(result[0]))
+            return result[0]
+        
 
     def close(self):
         """Закрывавем соединение с базой данных"""
