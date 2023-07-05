@@ -5,6 +5,27 @@ class DataBase:
         self.connect = sqlite3.connect(db)
         self.cur = self.connect.cursor()
 
+
+    def check_commands(self , guild):
+        result = self.cur.execute("SELECT `command` FROM `commands` WHERE `guild` = ?" , (guild,)).fetchone()
+        return result
+    
+    def check_embed(self , guild , command , option):
+        result = self.cur.execute("SELECT ? FROM embed WHERE (guild = ? AND command = ?)" , (option , guild , command)).fetchone()
+        if result[0]:
+            return result[0]
+        
+        else:
+            return False
+    
+    def check_button(self , guild , command):
+        result = self.cur.execute("SELECT button FROM commands WHERE (guild = ? AND command = ?)" , (guild , command)).fetchone()
+        if result[0] == True:
+            return True
+        
+        else:
+            return False
+
     def check_user(self , id):
         result = self.cur.execute("SELECT `id` FROM `users` WHERE `user_id` = ?" , (id,))
         return bool(len(result.fetchall()))
@@ -21,6 +42,11 @@ class DataBase:
         level = result[5]
         work = result[7]
         return username , balance , level , bank , work
+    
+    def exp_check(self , id):
+        result = self.cur.execute("SELECT * FROM users WHERE `user_id` = ?" , (id,)).fetchone()
+        exp = result[6]
+        return exp
     
     # def test(self , id):
     #     money_data = self.cur.execute("SELECT money FROM users WHERE user_id = ?" , (id,)).fetchone()
@@ -259,6 +285,9 @@ class DataBase:
         elif command == "Экономика":
             self.cur.execute("UPDATE settings SET economy_commands = ? WHERE guild = ?" , (update , guild,))
             
+        elif command == "Музыка":
+            self.cur.execute("UPDATE settings SET music = ? WHERE guild = ?" , (update , guild,))
+            
         elif command == "Приветствие":
             self.cur.execute("UPDATE settings SET greeting = ? WHERE guild = ?" , (update , guild,))
             
@@ -266,7 +295,7 @@ class DataBase:
             self.cur.execute("UPDATE settings SET farewell = ? WHERE guild = ?" , (update , guild,))
             
         elif command == "Уровни":
-            self.cur.execute("UPDATE settings SET farewell = ? WHERE guild = ?" , (update , guild,))
+            self.cur.execute("UPDATE settings SET exp = ? WHERE guild = ?" , (update , guild,))
             
         elif command == "Пользовательские команды":
             self.cur.execute("UPDATE settings SET user_commands = ? WHERE guild = ?" , (update , guild,))
@@ -299,6 +328,83 @@ class DataBase:
             print(int(result[0]))
             return result[0]
         
+    def command(self , guild , name):
+        result = self.cur.execute("SELECT command FROM commands WHERE (guild = ? AND command = ?)" , (guild, name,))
+        result = bool(len(result.fetchall()))
+        
+        if result == False:
+            self.cur.execute("INSERT INTO commands (`guild` , `command` , `embed` , `button` , `menu`) VALUES (? , ? , ? , ? , ?)" , (guild, name, "False", "False", "False",))
+            self.connect.commit()
+            
+        else:
+            return
+        
+    def activate(self , guild , command , option):
+        if option == "embed":
+            self.cur.execute("UPDATE commands SET embed = ? WHERE (guild = ? AND command = ?)" , ("True" , guild , command))
+            self.connect.commit()
+            
+        elif option == "button":
+            self.cur.execute("UPDATE commands SET button = ? WHERE (guild = ? AND command = ?)" , ("True" , guild , command))
+            self.connect.commit()
+            
+        elif option == "menu":
+            self.cur.execute("UPDATE commands SET menu = ? WHERE (guild = ? AND command = ?)" , ("True" , guild , command))
+            self.connect.commit()
+            
+    def create_button(self , guild , name):
+        self.cur.execute("INSERT INTO buttons (`guild` , `command` , `value` , `style` , `action` , `role_id`) VALUES (? , ? , ? , ? , ? , ?)" , (guild, name, "False", "False", "False" , "None"))
+        self.connect.commit()
+            
+    def button(self , guild , name , option , value , role_id = None):
+        if option == "value":
+            self.cur.execute("UPDATE buttons SET value = ? WHERE (guild = ? AND command = ?)" , (value, guild, name,))
+            self.connect.commit()
+            
+        elif option == "style":
+            self.cur.execute("UPDATE buttons SET style = ? WHERE (guild = ? AND command = ?)" , (value, guild, name,))
+            self.connect.commit()
+            
+        elif option == "action":
+            if value == "role":
+                self.cur.execute("UPDATE buttons SET action = ? WHERE (guild = ? AND command = ?)" , (value, guild, name,))
+                self.cur.execute("UPDATE buttons SET role_id = ? WHERE (guild = ? AND command = ?)" , (role_id, guild, name,))
+                self.connect.commit()
+                
+    def create_select(self , guild , name):
+        self.cur.execute("INSERT INTO options (`guild` , `command` , `label` , `description` , `action` , `role`) VALUES (? , ? , ? , ? , ? , ?)" , (guild, name, "False", "False", "False" , None))
+        self.connect.commit()
+            
+    def select(self , guild , name , option , value  , role = None):
+        if option == "name":
+            self.cur.execute("UPDATE options SET label = ? WHERE (guild = ? AND command = ?)" , (value, guild, name,))
+            self.connect.commit()
+            
+        elif option == "description":
+            self.cur.execute("UPDATE options SET description = ? WHERE (guild = ? AND command = ?)" , (value, guild, name,))
+            self.connect.commit()
+            
+        elif option == "action":
+            if value == "role":
+                self.cur.execute("UPDATE options SET action = ? WHERE (guild = ? AND command = ?)" , (role, guild, name,))
+                self.connect.commit()
+            
+    def create_embed(self , guild , name):
+        self.cur.execute("INSERT INTO embed (`guild` , `command` , `title` , `description` , `image`) VALUES (? , ? , ? , ? , ?)" , (guild, name, "False", "False", "False"))
+        self.connect.commit()
+
+    def embed(self , guild , name , option , value):
+        if option == "title":
+            self.cur.execute("UPDATE embed SET title = ? WHERE (guild = ? AND command = ?)" , (value, guild, name,))
+            self.connect.commit()
+            
+        elif option == "description":
+            self.cur.execute("UPDATE embed SET description = ? WHERE (guild = ? AND command = ?)" , (value, guild, name,))
+            self.connect.commit()
+            
+        elif option == "image":
+            self.cur.execute("UPDATE embed SET image = ? WHERE (guild = ? AND command = ?)" , (value, guild, name,))
+            self.connect.commit()
 
     def close(self):
         """Закрывавем соединение с базой данных"""

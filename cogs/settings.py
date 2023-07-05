@@ -10,6 +10,7 @@ class Menu(disnake.ui.StringSelect):
         options = [
             disnake.SelectOption(label="Модерация" , description="Команды модерации" , emoji="🃏"),
             disnake.SelectOption(label="Экономика" , description="Команды экономики" , emoji="💵"),
+            disnake.SelectOption(label="Музыка" , description="Музыка на сервере" , emoji="🎵"),
             disnake.SelectOption(label="Приветствие" , description="Приветствие новых пользователей" , emoji="🤝"),
             disnake.SelectOption(label="Прощание" , description="Прощание пользователей" , emoji="👋"),
             disnake.SelectOption(label="Пользовательские команды" , description="Развлекательные команды которыми может пользоваться каждый пользователь" , emoji="🗣"),
@@ -48,6 +49,9 @@ class Menu(disnake.ui.StringSelect):
             
         elif self.values[0] == "Exp":
             await inter.response.edit_message(embed=embed , view=Buttons("Уровни"))
+            
+        elif self.values[0] == "Музыка":
+            await inter.response.edit_message(embed=embed , view=Buttons("Музыка"))
             
 class Buttons(disnake.ui.View):
     def __init__(self , option):

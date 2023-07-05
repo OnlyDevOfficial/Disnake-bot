@@ -13,7 +13,12 @@ class Ban(commands.Cog):
     @commands.has_permissions(kick_members=True , administrator=True)
     async def ban(self , ctx , member: disnake.Member , * , reason="Нарушение прав"):
         if self.DataBase.check_settings_true_module(ctx.author.guild.name , "admin_commands"):
-            await ctx.send(f"Администратор {ctx.author.mention} забанил пользователя {member.mention} по причине : {reason}")
+            embed = disnake.Embed(
+                color=disnake.Color.green(),
+                title="Бан",
+                description=f"Администратор {ctx.author.mention} забанил пользователя {member.mention} по причине : {reason}"
+            )
+            await ctx.send(embed=embed)
             await member.ban(reason=reason)
             
         else:

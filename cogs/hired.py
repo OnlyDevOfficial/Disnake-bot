@@ -94,6 +94,13 @@ class Hired(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def hire(self , ctx):
         if self.DataBase.check_settings_true_module(ctx.author.guild.name , "economy_commands"):
+            embed = disnake.Embed(
+                color=disnake.Color.green(),
+                title="Вакансии",
+            )
+            
+            embed.set_image("http://oeildurecruteur.ca/wp-content/uploads/2020/04/shutterstock_1264167598.jpg")
+            
             view = disnake.ui.View(timeout=None) 
             view.add_item(Menu_Select()) 
             await ctx.send(view=view)

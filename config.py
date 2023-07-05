@@ -1,5 +1,5 @@
 data = {
-    "TOKEN": "MTEyNDI5NDQwMTM2NDA3NDU0OA.GCi-1d.09jHJo3uysSbY0sh0iiMOSr7csnD5ORGmiffIc",
+    "TOKEN": "MTEyNDI5NDQwMTM2NDA3NDU0OA.GGq0ef.YG0A-myYFkL1YZ_xdQQtC3PMlevTLEvb8mGD-o",
     "words": [
         "блин"
     ],
@@ -83,6 +83,5 @@ Folzy🐍#5525
  "dog": ["https://media.tenor.com/Nfct9RreQfUAAAAS/dog-meme.gif" , "https://media.tenor.com/bH4DmYV8V7QAAAAM/lauguningdog-dog.gif" , "https://media.tenor.com/twOxYKWAI5IAAAAM/dog.gif" , "https://media.tenor.com/3nB5e66NmtIAAAAM/dog-dog-tail-wagging.gif" , "https://media.tenor.com/JiRMdcRMYgoAAAAM/bellebows-happy-dog.gif" , "https://media.tenor.com/3U5KP3G7EVkAAAAM/hyejinsgenre-dog-meme.gif" , "https://media.tenor.com/bGOhVBvg9_kAAAAM/talking-dog-meme.gif" , "https://media.tenor.com/JIgNM-eR2pYAAAAM/dog.gif" , "https://media.tenor.com/lBpPIVojebAAAAAM/puppytalesphotos-puppytales.gif" , "https://media.tenor.com/Iv-vsEnjbGwAAAAM/dog.gif" , "https://media.tenor.com/YYNQWHTJZ5UAAAAM/look-at-this-dog-immediately-dog-meme.gif" , "https://media.tenor.com/OaibUW5AJQ8AAAAM/golden-retriever-dog.gif"],
  "crime-win": ["Снимая колпачки покрышек вы заработали " , "Вы украли сумку у девушки и заработали " , "Ограбив магазин вы заработали " , "Перевезя наркоту вы заработали "],
  "crime-lose": ["Вы перевозили наркоту, но вас решила остановить полиция, сумма проигыша " , "Вы ограбили магазин, но за вами погналась полиция, сумма проигрыша "],
- "menu": 1124365682667171991,
- "piar": "",
+ "menu": 1124452030778445906,
 }
