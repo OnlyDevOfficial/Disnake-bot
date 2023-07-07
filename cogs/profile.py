@@ -17,7 +17,7 @@ class Data(commands.Cog):
                 embed = disnake.Embed(
                     color=disnake.Color.green(),
                     title=f"__Информация о пользователе {username}__",
-                    description=f"\nРабота: {work}\nБанк: {bank}🍬\nВаш счет: {balance}🍬"
+                    description=f"__{username}__ работает {work}\nНа его балансе сейчас {balance}🍬\nА в банке {bank}🍬"
                 )
                 
                 date = datetime.datetime.now()

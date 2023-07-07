@@ -19,10 +19,10 @@ class Ball(commands.Cog):
                 
                 embed = disnake.Embed(
                     color=disnake.Color.green(),
-                    title="🎱ball API"
+                    title="ball API"
                 )
                 
-                embed.add_field("query" , query , inline=False)
+                embed.add_field("❓query" , query , inline=False)
                 embed.add_field("🎱ball" , res["answer"] , inline=False)
                 
                 await ctx.send(embed=embed)

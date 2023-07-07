@@ -34,7 +34,7 @@ class Menu_Select(disnake.ui.StringSelect):
                     title='Работа'
                 )
 
-                await inter.response.send_message(embed=embed)
+                await inter.response.edit_message(embed=embed , view=None)
 
             else:
                 embed = disnake.Embed(
@@ -42,7 +42,7 @@ class Menu_Select(disnake.ui.StringSelect):
                     description="На вашем счету недостаточно средств",
                     title='Недостаточно средств'
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.edit_message(embed=embed , view=None)
 
         elif self.values[0] == "Телеведущий":
             user_name , balance , level , bank , work = self.DataBase.data(inter.author.id)
@@ -53,7 +53,7 @@ class Menu_Select(disnake.ui.StringSelect):
                     description="Вы успешно устроились на работу телеведущим",
                     title='Работа'
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.edit_message(embed=embed , view=None)
 
             else:
                 embed = disnake.Embed(
@@ -61,7 +61,7 @@ class Menu_Select(disnake.ui.StringSelect):
                     description="На вашем счету недостаточно средств",
                     title='Недостаточно средств'
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.edit_message(embed=embed , view=None)
 
         elif self.values[0] == "Банкир":
             user_name , balance , level , bank , work = self.DataBase.data(inter.author.id)
@@ -72,7 +72,7 @@ class Menu_Select(disnake.ui.StringSelect):
                     description="Вы успешно устроились на работу банкиром",
                     title='Работа'
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.edit_message(embed=embed , view=None)
 
             else:
                 embed = disnake.Embed(
@@ -80,13 +80,14 @@ class Menu_Select(disnake.ui.StringSelect):
                     description="На вашем счету недостаточно средств",
                     title='Недостаточно средств'
                 )
-                await inter.response.send_message(embed=embed)
+                await inter.response.edit_message(embed=embed , view=None)
 
 
 
 class Hired(commands.Cog):
     def __init__(self , bot):
         self.bot = bot
+        self.DataBase = DataBase("db.db")
         self.persistents_view_added = False
 
 
@@ -97,13 +98,12 @@ class Hired(commands.Cog):
             embed = disnake.Embed(
                 color=disnake.Color.green(),
                 title="Вакансии",
+                description="Выберите любую понравившиюся вам вакансию, в любой момент вы сможете уволится и устроится на другую работу"
             )
-            
-            embed.set_image("http://oeildurecruteur.ca/wp-content/uploads/2020/04/shutterstock_1264167598.jpg")
             
             view = disnake.ui.View(timeout=None) 
             view.add_item(Menu_Select()) 
-            await ctx.send(view=view)
+            await ctx.send(embed=embed , view=view)
             
         else:
             embed = disnake.Embed(
