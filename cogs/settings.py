@@ -8,13 +8,14 @@ from disnake import TextInputStyle
 class Menu(disnake.ui.StringSelect):
     def __init__(self):
         options = [
-            disnake.SelectOption(label="Модерация" , description="Команды модерации" , emoji="🃏"),
-            disnake.SelectOption(label="Экономика" , description="Команды экономики" , emoji="💵"),
-            disnake.SelectOption(label="Музыка" , description="Музыка на сервере" , emoji="🎵"),
-            disnake.SelectOption(label="Приветствие" , description="Приветствие новых пользователей" , emoji="🤝"),
-            disnake.SelectOption(label="Прощание" , description="Прощание пользователей" , emoji="👋"),
-            disnake.SelectOption(label="Пользовательские команды" , description="Развлекательные команды которыми может пользоваться каждый пользователь" , emoji="🗣"),
-            disnake.SelectOption(label="Exp" , description="Система уровней" , emoji="🎒"),
+            disnake.SelectOption(label="Модерация" , emoji="🃏"),
+            disnake.SelectOption(label="Экономика" , emoji="💵"),
+            disnake.SelectOption(label="Музыка" , emoji="🎵"),
+            disnake.SelectOption(label="Приветствие" , emoji="🤝"),
+            disnake.SelectOption(label="Прощание" , emoji="👋"),
+            disnake.SelectOption(label="Пользовательские команды" , emoji="🗣"),
+            disnake.SelectOption(label="Уровни" , emoji="🎒"),
+            disnake.SelectOption(label="Комнаты" , emoji="💾"),
         ]
         
         super().__init__(
@@ -47,11 +48,14 @@ class Menu(disnake.ui.StringSelect):
         elif self.values[0] == "Пользовательские команды":
             await inter.response.edit_message(embed=embed , view=Buttons("Пользовательские команды"))
             
-        elif self.values[0] == "Exp":
+        elif self.values[0] == "Уровни":
             await inter.response.edit_message(embed=embed , view=Buttons("Уровни"))
             
         elif self.values[0] == "Музыка":
             await inter.response.edit_message(embed=embed , view=Buttons("Музыка"))
+            
+        elif self.values[0] == "Комнаты":
+            await inter.response.edit_message(embed=embed , view=Buttons("Комнаты"))
             
 class Buttons(disnake.ui.View):
     def __init__(self , option):
@@ -89,12 +93,25 @@ class Buttons(disnake.ui.View):
     
     @disnake.ui.button(label="Выключить" , style=disnake.ButtonStyle.red , custom_id="off")
     async def off(self , button: disnake.ui.Button , inter: disnake.Interaction):
-        self.DataBase.settings(inter.author.guild.name , self.option , "False")
+        if self.option == "Комнаты":
+            if self.DataBase.check_settings_true_module(inter.author.guild.name , "rooms"):
+                category = self.DataBase.check_id_channel(inter.author.guild.name , "music_category")
+                category = disnake.utils.get(inter.author.guild.categories , id=category)
+                for channel in category.channels:
+                    await channel.delete()
+                    
+                await category.delete()
+                self.DataBase.settings(inter.author.guild.name , "Комнаты" , "False")
+                self.DataBase.settings(inter.author.guild.name , "id категории" , "None")
+                
+        else: self.DataBase.settings(inter.author.guild.name , self.option , "False")
+                
         embed = disnake.Embed(
             title="Успех",
             description="Настройки были успешно обновлены!",
             color=disnake.Color.green()
         )
+        
         await inter.response.edit_message(embed=embed , view=Back())
 
 class Back(disnake.ui.View):

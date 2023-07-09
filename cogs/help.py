@@ -6,9 +6,9 @@ import config
 class Menu(disnake.ui.StringSelect):
     def __init__(self):
         options = [
-            disnake.SelectOption(label="Администрация" , description="Команды администратирования" , emoji="📚"),
-            disnake.SelectOption(label="Экономика" , description="Команды экономики" , emoji="📰"),
-            disnake.SelectOption(label="Пользовательские команды" , description="Команды которыми могуть пользоваться все люди на сервере" , emoji="🌉"),
+            disnake.SelectOption(label="Администрация" , emoji="📚"),
+            disnake.SelectOption(label="Экономика" ,  emoji="📰"),
+            disnake.SelectOption(label="Пользовательские команды" , emoji="🌉"),
         ]
         
         super().__init__(
@@ -24,7 +24,7 @@ class Menu(disnake.ui.StringSelect):
                 embed = disnake.Embed(
                     color=disnake.Color.green(),
                     title="Администрация",
-                    description="```/ban - выдать бан\n/kick - выдать кик\n/rules - навигационное меню\nclear - очистить сообщения\nnews - создать новость```"
+                    description="```/ban - выдать бан\n/kick - выдать кик\n/clear - очистить сообщения\n/news - создать новость```"
                 )
                 
                 await inter.response.edit_message(embed=embed , view=Back())
@@ -32,7 +32,7 @@ class Menu(disnake.ui.StringSelect):
             elif self.values[0] == "Экономика":
                 embed = disnake.Embed(
                     color=disnake.Color.green(),
-                    title="Администрация",
+                    title="Экономика",
                     description="```/profile - показывает ваш профиль\n/casino - игра в казино\n/guess - игра в угадай чило\n/to - положить или снять деньги с банка\n/steal - воровать\n/work - работать\n/transfer - перевести деньги\n/buy - купить роль\n/shop - магазин\n/leaderboard - пахари сервера```"
                 )
                 
@@ -41,8 +41,8 @@ class Menu(disnake.ui.StringSelect):
             elif self.values[0] == "Пользовательские команды":
                 embed = disnake.Embed(
                     color=disnake.Color.green(),
-                    title="Администрация",
-                    description="```/ab - вычислить\n/embed - отправить embed сообщение\n/kiss - целовать\n/cry - плакать\n/laughter - смеяться\n/diogram - процент мальчиков и девочек\n/cat - кошка\n/food - еда\n/dog - собака\n/steam - узнать информацию об игре в стиме\n/morse_code - перевести текст в азбуку морзе\n/8ball - спросить что нибудь у 8ball```"
+                    title="Пользовательские команды",
+                    description="```/ab - вычислить\n/embed - отправить embed сообщение\n/steam - узнать информацию об игре в стиме\n/morse_code - перевести текст в азбуку морзе\n/8ball - спросить что нибудь у 8ball```"
                 )
                 
                 await inter.response.edit_message(embed=embed , view=Back())

@@ -300,10 +300,16 @@ class DataBase:
         elif command == "Пользовательские команды":
             self.cur.execute("UPDATE settings SET user_commands = ? WHERE guild = ?" , (update , guild,))
             
+        elif command == "Комнаты":
+            self.cur.execute("UPDATE settings SET rooms = ? WHERE guild = ?" , (update , guild,))
+    
+        elif command == "id категории":
+            self.cur.execute("UPDATE settings SET music_category = ? WHERE guild = ?" , (update , guild,))
+            
         self.connect.commit()
         
     def setup_settings(self , guild):
-        self.cur.execute("INSERT INTO settings (`guild` , `admin_commands` , `economy_commands` , `greeting` , `farewell` , `exp`) VALUES (? , ? , ? , ? , ? , ?)" , (guild, "False", "False", "False", "False", "False",))
+        self.cur.execute("INSERT INTO settings (`guild` , `admin_commands` , `economy_commands` , `greeting` , `farewell` , `exp` , `rooms` , `music_category`) VALUES (? , ? , ? , ? , ? , ? , ? , ?)" , (guild, "False", "False", "False", "False", "False", "False", "None",))
         self.connect.commit()
         
     def check_settings(self , guild):
@@ -313,11 +319,11 @@ class DataBase:
     def check_settings_true_module(self , guild , module):
         result = self.cur.execute(f"SELECT {module} FROM settings WHERE `guild` = ?" , (guild,)).fetchone()
         if result:
-            if result[0] != "False":
+            if result[0] != "False" or result[0] != "None":
                 return True
         
-        else:
-            return False
+            else:
+                return False
         
     def check_id_channel(self , guild , option):
         result = self.cur.execute(f"SELECT {option} FROM `settings` WHERE `guild` = ?" , (guild,)).fetchone()
@@ -325,7 +331,6 @@ class DataBase:
             return "False"
         
         else:
-            print(int(result[0]))
             return result[0]
         
     def command(self , guild , name):
