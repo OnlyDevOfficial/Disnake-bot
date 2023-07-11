@@ -7,7 +7,7 @@ class Buttons(disnake.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
         
-    @disnake.ui.button(label="Поддержать проект" , style=disnake.ButtonStyle.url , url="https://www.youtube.com")
+    @disnake.ui.button(label="Поддержать проект" , style=disnake.ButtonStyle.url , url="https://github.com/f01zy/Yakuza")
     async def project(self , button: disnake.ui.Button , inter: disnake.Interaction):
         pass
     

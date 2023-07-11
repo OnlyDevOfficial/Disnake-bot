@@ -24,7 +24,6 @@ class Members(commands.Cog):
                         title="Приветствие 🤝",
                         description=f"{member.mention} ,приветствуем тебя на этом сервере. Прошу тебя зайти на канал с правилами и прочитать их, а так же на этом канале ты можешь ознакомится с другой информацией о этом сервере"
                     )
-                    embed.set_image(file=disnake.File("greeting.gif"))
 
                     await channel.send(embed=embed)
                     
@@ -49,7 +48,6 @@ class Members(commands.Cog):
                         title="Прощание 👋",
                         description=f"Мы прощаемся с {member.mention}, надеюсь он еще присоединится к нам"
                     )
-                    embed.set_image(file=disnake.File("goodbye.png"))
 
                     await channel.send(embed=embed)
                     

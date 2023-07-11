@@ -1,5 +1,5 @@
 data = {
-    "TOKEN": "MTEyNDI5NDQwMTM2NDA3NDU0OA.GOmDi8.yZAICwwtiKCL7QkoJpRU82_-7xIYoEQoUb5zPM",
+    "TOKEN": "MTEyNDI5NDQwMTM2NDA3NDU0OA.G_cSRr.cDLMqUYez5JWzAL7UI-cTysa1pupe77vI7lpg0",
     
     "crime-win": ["Снимая колпачки покрышек вы заработали " , "Вы украли сумку у девушки и заработали " , "Ограбив магазин вы заработали " , "Перевезя наркоту вы заработали "],
     "crime-lose": ["Вы перевозили наркоту, но вас решила остановить полиция, сумма проигыша " , "Вы ограбили магазин, но за вами погналась полиция, сумма проигрыша "],
